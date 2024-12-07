@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>coin.png</file>
+        <file>enemy.png</file>
+        <file>mario.png</file>
+        <file>back.jpg</file>
+        <file>welcomeImage.png</file>
+        <file>bg2.png</file>
+        <file>bg3.png</file>
+        <file>end.jpg</file>
+        <file>end1.jpg</file>
+        <file>end2.jpg</file>
+        <file>endGame.png</file>
+        <file>finalEnd.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>bg2.png</file>
+        <file>bg1.png</file>
+        <file>bg3.png</file>
+    </qresource>
+</RCC>
