@@ -14,6 +14,7 @@ SOURCES += \
     GameScene.cpp \
     GameWindow.cpp \
     Heart.cpp \
+    Level5.cpp \
     Player.cpp \
     WelcomeWindow.cpp \
     fallingRock.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     GameScene.h \
     GameWindow.h \
     Heart.h \
+    Level5.h \
     Player.h \
     WelcomeWindow.h \
     fallingRock.h \

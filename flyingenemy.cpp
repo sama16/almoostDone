@@ -14,7 +14,7 @@ FlyingEnemy::FlyingEnemy(int x, int y, QObject *parent)
     // Timer to periodically change direction
     movementTimer = new QTimer(this);
     connect(movementTimer, &QTimer::timeout, this, &FlyingEnemy::changeDirection);
-    movementTimer->start(1000); // Change direction every 1 second
+    movementTimer->start(3000); // Change direction every 1 second
 }
 
 void FlyingEnemy::update() {
@@ -22,7 +22,7 @@ void FlyingEnemy::update() {
     setY(y() + direction * 2);
 
     // Prevent it from going out of bounds (adjust these limits as needed)
-    if (y() < 100 || y() > 300) {
+    if (y() < 80 || y() > 500) {
         direction *= -1; // Reverse direction
     }
 }

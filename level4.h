@@ -43,6 +43,7 @@ public:
     // Check for collisions with enemies (mushrooms)
     void handleEnemyCollisions();
 signals:
+       void goToLevel5Triggered();
              void restartRequested();
 
 public slots:

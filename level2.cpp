@@ -251,7 +251,7 @@ void Level2::addHearts() {
     hearts.clear();
 
     // Calculate the number of hearts based on the health
-    int numHearts = healthCount / 100;  // For example, if health is 300, we show 3 hearts
+    int numHearts = healthCount / 30;  // For example, if health is 300, we show 3 hearts
 
     // Generate hearts in a horizontal row based on the health
     for (int i = 0; i < numHearts; ++i) {
@@ -267,7 +267,7 @@ void Level2::addHearts() {
 }
 
 void Level2::updateHealthDisplay() {
-    int heartsToShow = healthCount / 100;  // For each 100 health, we show 1 heart
+    int heartsToShow = healthCount / 30;  // For each 100 health, we show 1 heart
 
     // Update the hearts display by removing or adding hearts
     int currentHeartsCount = hearts.size();

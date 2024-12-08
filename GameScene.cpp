@@ -8,7 +8,7 @@
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
 GameScene::GameScene(QObject *parent)
-    : QGraphicsScene(parent),newScreenTriggered(false),score(0),health(300) {
+    : QGraphicsScene(parent),newScreenTriggered(false),score(0),health(90) {
     // Set scene size to match the background size
     QPixmap bgPixmap(":/images/bg2.png");
     setSceneRect(0, 0, bgPixmap.width(), bgPixmap.height());
@@ -35,7 +35,7 @@ GameScene::GameScene(QObject *parent)
     // Set up a timer to update the scene periodically
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &GameScene::updateScene);
-    timer->start(15);
+    timer->start(20);
     updateScene();
     restartButton = new QPushButton("Restart Game");
     restartButton->setFont(QFont("Arial", 16));
@@ -244,7 +244,7 @@ void GameScene::addHearts() {
     hearts.clear();
 
     // Calculate the number of hearts based on the health
-    int numHearts = health / 100;  // For example, if health is 300, we show 3 hearts
+    int numHearts = health / 30;  // For example, if health is 300, we show 3 hearts
 
     // Generate hearts in a horizontal row based on the health
     for (int i = 0; i < numHearts; ++i) {
@@ -260,7 +260,7 @@ void GameScene::addHearts() {
 }
 
 void GameScene::updateHealthDisplay() {
-    int heartsToShow = health / 100;  // For each 100 health, show one heart
+    int heartsToShow = health / 30;  // For each 100 health, show one heart
 
     // Update the hearts display
     int currentHeartsCount = hearts.size();
@@ -353,7 +353,7 @@ void GameScene::handleEnemyCollisions() {
 
         if (player->collidesWithItem(enemy) && health) {
             // Collide with enemy and reduce health
-             updateHealthDisplay();  // Update health display
+          /*   updateHealthDisplay();*/  // Update health display
             // health--;
           // Update health display
             qDebug() << "Health: " << health;

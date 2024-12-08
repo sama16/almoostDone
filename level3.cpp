@@ -108,7 +108,7 @@ void Level3::triggerEndScreen() {
 
     addItem(textItem);
 
-    QPushButton *level3Button = new QPushButton("Go to Level 3");
+    QPushButton *level3Button = new QPushButton("Go to Level 4");
     level3Button->setFont(QFont("Arial", 16));
     level3Button->setFixedSize(150, 50);
 
@@ -231,7 +231,7 @@ void Level3::addHearts() {
         hearts.clear();
 
         // Calculate the number of hearts based on the health
-        int numHearts = healthCount / 100;  // For example, if health is 300, we show 3 hearts
+        int numHearts = healthCount / 30;  // For example, if health is 300, we show 3 hearts
 
         // Generate hearts in a horizontal row based on the health
         for (int i = 0; i < numHearts; ++i) {
@@ -247,7 +247,7 @@ void Level3::addHearts() {
     }
 
     void Level3::updateHealthDisplay() {
-        int heartsToShow = healthCount / 100;  // For each 100 health, we show 1 heart
+        int heartsToShow = healthCount / 30;  // For each 100 health, we show 1 heart
 
         // Update the hearts display by removing or adding hearts
         int currentHeartsCount = hearts.size();
@@ -382,7 +382,12 @@ void Level3::handleEnemyCollisions() {
     // Flying enemies
     for (FlyingEnemy *flyingEnemy : flyingEnemies) {
         if (player->collidesWithItem(flyingEnemy)) {
-            qDebug() << "Player hit by flying enemy!";
+            updateHealthDisplay();
+            healthCount--;
+        }
+        if (healthCount <= 0) {
+            triggerGameOver();
+            break;
         }
     }
 }

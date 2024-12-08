@@ -1,4 +1,6 @@
 #include "level4.h"
+#include "Level5.h"
+
 #include "GameScene.h"
 
 #include "Coin.h"
@@ -9,7 +11,7 @@
 #include <QPainter>
 #include <QRandomGenerator>
 #include <QGraphicsProxyWidget>
-
+#include"QPushButton"
 #include <QGraphicsView>
 Level4::Level4(int score,int health,QObject *parent)
     : QGraphicsScene(parent), newScreenTriggered(false) {
@@ -37,13 +39,16 @@ Level4::Level4(int score,int health,QObject *parent)
   addHearts();
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Level4::updateScene);
-    timer->start(20);
+    timer->start(12);
     restartButton = new QPushButton("Restart Game");
     restartButton->setFont(QFont("Arial", 16));
     restartButton->setFixedSize(150, 50);
     restartButton->setVisible(false);
     updateScene();
-
+    restartButton = new QPushButton("Restart Game");
+    restartButton->setFont(QFont("Arial", 16));
+    restartButton->setFixedSize(150, 50);
+    restartButton->setVisible(false);
 }
 
 void Level4::drawBackground(QPainter *painter, const QRectF &rect) {
@@ -102,7 +107,40 @@ void Level4::triggerEndScreen() {
     textItem->setPos(sceneRect().width() / 2 - textItem->boundingRect().width() / 2,
                      sceneRect().height() / 2 - textItem->boundingRect().height() / 2);
     addItem(textItem);
+    QPushButton *level4Button = new QPushButton("Go to Level 5");
+    level4Button->setFont(QFont("Arial", 16));
+    level4Button->setFixedSize(150, 50);
+
+    // Connect the button's click signal to a slot or signal
+    connect(level4Button, &QPushButton::clicked, this, &Level4::goToLevel5Triggered);
+
+    QGraphicsProxyWidget *proxyWidget = new QGraphicsProxyWidget();
+    proxyWidget->setWidget(level4Button);
+    proxyWidget->setZValue(2);
+    proxyWidget->setPos(sceneRect().width() / 2 - level4Button->width() / 2,
+                        sceneRect().height() / 2 - level4Button->height() / 2 + 50);
+    addItem(proxyWidget);
 }
+
+void Level4::goToLevel5Triggered() {
+    // Create Level 3 scene
+    Level5 *level5 = new Level5(score,healthCount, this);
+
+    // Get the view that is displaying the current scene
+    QList<QGraphicsView *> views = this->views();
+    if (!views.isEmpty()) {
+        QGraphicsView *view = views.first();
+
+        // Set the new scene in the same view
+        view->setScene(level5);
+
+        // Optionally delete this scene to free memory
+
+    } else {
+        qDebug() << "No view is associated with the current scene!";
+    }
+}
+
 
 void Level4::updateScene() {
     player->update();
@@ -185,7 +223,7 @@ void Level4::addHearts() {
     hearts.clear();
 
     // Calculate the number of hearts based on the health
-    int numHearts = healthCount / 100;  // For example, if health is 300, we show 3 hearts
+    int numHearts = healthCount / 30;  // For example, if health is 300, we show 3 hearts
 
     // Generate hearts in a horizontal row based on the health
     for (int i = 0; i < numHearts; ++i) {
@@ -201,7 +239,7 @@ void Level4::addHearts() {
 }
 
 void Level4::updateHealthDisplay() {
-    int heartsToShow = healthCount / 100;  // For each 100 health, we show 1 heart
+    int heartsToShow = healthCount / 30;  // For each 100 health, we show 1 heart
 
     // Update the hearts display by removing or adding hearts
     int currentHeartsCount = hearts.size();
@@ -326,6 +364,18 @@ void Level4::handleEnemyCollisions() {
 
         }
     }
+    for (fallingRock *rock : rocks) {
+        if (player->collidesWithItem(rock)) {
+            healthCount--;
+            updateHealthDisplay();
+            qDebug() << "Collided with a falling rock! Health: " << healthCount;
+
+            if (healthCount <= 0) {
+                triggerGameOver();
+                break;
+            }
+        }
+    }
 }
 void Level4::triggerGameOver() {
     restartButton->setVisible(true);
@@ -340,14 +390,7 @@ void Level4::triggerGameOver() {
     // Reset hearts and health display
     connect(restartButton, &QPushButton::clicked, this, &Level4::restartRequested);
     // Add restart button to scene using QGraphicsProxyWidget
-    if (!restartButtonProxy) {
-        restartButtonProxy = new QGraphicsProxyWidget();
-        restartButtonProxy->setWidget(restartButton);
-        restartButtonProxy->setZValue(2);
-        restartButtonProxy->setPos(sceneRect().width() / 2 - restartButton->width() / 2,
-                                   sceneRect().height() / 2 - restartButton->height() / 2 + 50);
-        addItem(restartButtonProxy);
-    }
+
 }
 void Level4::restartRequested(){
     GameScene *level1 = new GameScene(this);
